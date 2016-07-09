@@ -1,6 +1,6 @@
 # learn_python3
 ----
-&emsp;&emsp;这是我初学Python时写的一套Python基础示例程序.主要基于廖雪峰老师的Python3教程和&lt;&lt;深入理解Python&gt;&gt;.&emsp;感谢!
+&emsp;&emsp;这是我初学Python时写的一套Python基础示例程序.主要基于廖雪峰老师的<a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000">Python3教程</a>和&lt;&lt;<a href="https://book.douban.com/subject/1440658/">深入理解Python</a>&gt;&gt;.&emsp;感谢!
 
 下面是这些示例程序的目录总结:
 ---
