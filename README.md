@@ -100,12 +100,36 @@
 <br/>
 > 生成器(Generator)
 
-首先，生成器就是一种迭代器。生成器在语法上同样可作用于 next(), iter(), for-in 。生成器的特殊语法使得实现一个生成器比构建一个迭代器类要容器且更直观。
+&emsp;&emsp;当生成器函数被调用时，它不会执行函数体的内容，而是返回一个生成器对象。这个生成器对象具有与迭代器对象相同的语意，即可以作用于 `next()`，`iter()`， `for-in` 语句。当我们将返回的这个生成器对象作用于 `next()` 语句时，才开始执行函数，直到遇到 `yield` 语句停止（挂起）执行并返回 yielded 的值。当再次调用 `next()` 时，从上一次 `yield` 处接着执行。如此循环执行下去，直到没有可 `yield` 的值则抛出(raise) StopIteration 表明所有的值都以生成。
+
+
+- list的列表解析器(list comprehensions)和生成器表达式(Generator Comprehensions).
+
+&emsp;&emsp;创建一个新的列表可以使用列表解析和生成器表达式,这两种看起来一样的语法在实现上有着本质的不同。
+
+&emsp;&emsp;**list Comprehensions在使用之前已经将所有的值都计算出来并加载进内存。**
+	
+	list = [x **x for x in range(5)]
+	print(list) # 0,2,9,16,25
+
+&emsp;&emsp;**而Generator Comprehensions本质上并没有使用list，而是定义generator的一种更加简单的形式。只是其语法与list Comprehensions相似，并且在行为上看起来像list而已。**
+
+	list = (x ** for x in range(5))
+	print(list) # <generator object <genexpr> at 0x01FB1C00>
+	
+	#equivalent to:
+	def Range5():
+		x = 0
+		while x < 5:
+			yield x**x
+			x += 1
+
+<br/>
+
+>协程：
 
 	
+	
 
-- list的列表解析器(list comprehensions)和生成表达式(List comprehension).
-
-创建一个新的列表可以使用列表解析和生成器表达式,这两种看起来一样的语法在实现上有着本质的不同.
 
 
