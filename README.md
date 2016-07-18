@@ -30,6 +30,71 @@
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;4).装饰器(decorator)
 
+<br/>
+
+> 闭包(**Closure**)：
+
+&emsp;&emsp;在python中，**函数是对象**，函数名作为对此对象的引用。像其他数据结构一样，函数也可以赋值给变量，并且我们可以在函数中定义对象，将对象作为参数和将对象作为返回值。
+	
+&emsp;在这里，我们举一个例子来说明。
+	
+	def make_printer(msg):
+		def printer():
+			print(msg)
+		return printer
+
+	printer = make_printer('Foo!')
+	printer() #Foo			
+
+
+&emsp;&emsp;闭包是指 `内部函数(nested function)` **访问** 其 `外围函数(enclosing)`作用域的变量，并且外围函数已经执行完毕。
+
+&emsp;&emsp;当 `make_printer` 被调用，一个新的栈帧入栈，`printer` 函数作为其常量，`msg` 的值作为局部变量被保存。然后创建并返回了函数 `printer` 。**因为函数 `printer` 引用了`msg` 变量，当 `make_printer` 函数返回(return)之后它依旧存活(kept alive)。**
+
+
+&emsp;&emsp;这里面有两个关键点：存在内部函数，并且内部函数访问了外围局部变量。只有同时满足这两点，才称为闭包。
+
+<br/>
+> 装饰器(**decorator**):
+
+&emsp;&emsp;首先，装饰器是一种设计模式。在**不改变原有代码**的基础上，将其功能模块进行包装(wrapper)，构建出更加复杂的功能模块。通常，增强了的功能模块会调用被增强的(即原有的)功能逻辑。`AOP(Aspect Oriented Programming)` 就是使用这种编程思想。
+
+&emsp;&emsp;从技术上讲，Python的装饰器是使用闭包来实现的。并提供了简洁的语法糖支持。
+
+&emsp;&emsp;装饰器函数接收函数作为参数，并且在内部通过定义 `wrapper` 函数来实现增强的逻辑。通常情况下，这个函数会调用原函数，并且，这个函数的参数列表应该和被增强的函数保持一致。最终，我们将这个增强了的函数(wrapper)作为返回值。
+
+	def decorator(func):
+		def wrapper(*args, **kwargs):
+			maybe some code..
+			func(*args, **kwargs)
+			maybe some code...
+		return wrapper
+	
+	wrapper_origin_func = decorator(origin_func)
+	wrapper_origin_func(*args, **kwargs)
+
+
+语法糖支持：
+	
+	@decorator1(args)
+	@decorator2
+	def func(): pass
+	
+	#is equivalent to:
+	def func(): pass
+	func = decorator1(args)(decorator2(func))
+
+
+&emsp;关于装饰器带参数的解释：
+	
+	def decorator1(args):
+		def real-decorator(func):
+			def wrapper(*args, **kwargs):
+				some code..
+				func(*args, **kwargs)
+				some code access args
+			return wrapper
+		return real-decorator	
 
 ---
 ###&emsp;Chapter3:面向对象(Oritented-Object)
@@ -54,9 +119,9 @@
 ---
 ###Chapter4:协程 -- yield
 
-我们考虑自己来实现一个数字生成器(此生成器是广义的)，即 `range()` 函数的功能。
+&emsp;&emsp;我们考虑自己来实现一个数字生成器(此生成器是广义的)，即 `range()` 函数的功能。
 
-首先，我们借助 `list` 通过定义最简单，最直接的函数来实现。
+&emsp;&emsp;首先，我们借助 `list` 通过定义最简单，最直接的函数来实现。
 	
 	def MyRange(n):
 		num, list = 0, []
@@ -70,7 +135,7 @@
 <br/>
 
 
-> 迭代器(Iterator)
+> 迭代器(**Iterator**)
 	
 &emsp;&emsp;迭代器是访问容器对象(Contrain Object)元素的一种方式。
 
@@ -98,7 +163,7 @@
  &emsp;&emsp;定义迭代器类固然可行，但这种实现方式烦琐且复杂。在Python中，还有更好的实现方式。(然而，在Java中，这是唯一的实现方式)。
 
 <br/>
-> 生成器(Generator)
+> 生成器(**Generator**)
 
 &emsp;&emsp;当生成器函数被调用时，它不会执行函数体的内容，而是返回一个生成器对象。这个生成器对象具有与迭代器对象相同的语意，即可以作用于 `next()`，`iter()`， `for-in` 语句。当我们将返回的这个生成器对象作用于 `next()` 语句时，才开始执行函数，直到遇到 `yield` 语句停止（挂起）执行并返回 yielded 的值。当再次调用 `next()` 时，从上一次 `yield` 处接着执行。如此循环执行下去，直到没有可 `yield` 的值则抛出(raise) StopIteration 表明所有的值都以生成。
 
@@ -126,7 +191,7 @@
 
 <br/>
 
->协程：
+>协程(**Coroutine**)：
 
 	
 	
